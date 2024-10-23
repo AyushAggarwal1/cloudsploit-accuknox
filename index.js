@@ -85,10 +85,15 @@ let cloudConfig = {};
 
 // Now execute the scans using the defined configuration information.
 if (!settings.config) {
-    settings.cloud = 'aws';
-    // AWS will handle the default credential chain without needing a credential file
-    console.log('INFO: No config file provided, using default AWS credential chain.');
+    if (!settings.cloud) {
+        settings.cloud = 'aws'; // Only default to AWS if no cloud is specified
+        console.log('INFO: No config file provided, using default AWS credential chain.');
+    } 
+    else {
+        console.log(`INFO: No config file provided, but running for cloud ${settings.cloud}.`);
+    }
     return engine(cloudConfig, settings);
+
 }
 
 // If "compliance=cis" is passed, turn into "compliance=cis1 and compliance=cis2"
